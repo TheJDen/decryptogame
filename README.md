@@ -13,5 +13,5 @@ This implementation may be used so long as its usage satisfies the following cri
 - it does not allow to play the full game normally (Humans playing against each others or against AI) so that it does not compete against Scorpion Masque’s versions of the game
 
 # Game Reference
-Decrypto official site: https://www.scorpionmasque.com/en/decrypto
+Decrypto official site: https://www.scorpionmasque.com/en/decrypto  
 Decrypto official rules: https://www.fgbradleys.com/rules/rules6/Decrypto%20-%20rules.pdf
