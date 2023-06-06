@@ -8,13 +8,14 @@ version = "0.0.1"
 authors = [
   { name="Jaden Rodriguez", email="jadenrodriguez7@gmail.com" },
 ]
-description = "An implementation of a Decrypto-style game"
+description = "A non-official implementation of a Decrypto-style game"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU GENERAL PUBLIC LICENSE",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Operating System :: OS Independent",
+    "Development Status :: 1 - Planning"
 ]
 
 [tool.pytest.ini_options]
