@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "decryptogame"
-version = "0.0.1"
+version = "0.0.3"
 authors = [
   { name="Jaden Rodriguez", email="jadenrodriguez7@gmail.com" },
 ]
