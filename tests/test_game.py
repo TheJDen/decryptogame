@@ -1,5 +1,5 @@
 import pytest
-from decryptogame.game import Game, Note
+from decryptogame.game import Game, GameData, Note
 
 EXAMPLE_KEYWORDS = (
     ("black", "dragonfly", "cocktail", "sombrero"),
@@ -11,18 +11,38 @@ def default_game():
     return Game(keywords=EXAMPLE_KEYWORDS)
 
 class TestGame:
-    def test_default(self, default_game):
+    def test_default_values(self, default_game):
         assert default_game.keywords == EXAMPLE_KEYWORDS
 
-        assert default_game.rounds_played == 0
+        assert default_game.data.rounds_played == 0
 
         assert not default_game.notesheet
 
-        assert default_game.miscommunications[0] == 0
-        assert default_game.miscommunications[1] == 0
+        assert default_game.data.miscommunications[0] == 0
+        assert default_game.data.miscommunications[1] == 0
 
-        assert default_game.interceptions[0] == 0
-        assert default_game.interceptions[1] == 0
+        assert default_game.data.interceptions[0] == 0
+        assert default_game.data.interceptions[1] == 0
+
+        assert not default_game.game_over()
+
+    def test_default_end_rounds(self, default_game):
+        mid_game_data = GameData(rounds_played=7)
+        end_game_data = GameData(rounds_played=8)
+        assert not default_game.game_over(mid_game_data)
+        assert default_game.game_over(end_game_data)
+
+    def test_default_end_miscommunications(self, default_game):
+        mid_game_data = GameData(miscommunications=[1,1], rounds_played=2)
+        end_game_data = GameData(miscommunications=[1,2], rounds_played=2)
+        assert not default_game.game_over(mid_game_data)
+        assert default_game.game_over(end_game_data)
+
+    def test_default_end_interceptions(self, default_game):
+        mid_game_data = GameData(interceptions=[1,1], rounds_played=2)
+        end_game_data = GameData(interceptions=[1,2], rounds_played=2)
+        assert not default_game.game_over(mid_game_data)
+        assert default_game.game_over(end_game_data)
 
     def test_kw_only(self):
         with pytest.raises(TypeError):
@@ -50,11 +70,13 @@ class TestGame:
         rounds_played = len(notesheet)
 
         game = Game(keywords=EXAMPLE_KEYWORDS, notesheet=notesheet)
-        assert game.rounds_played == rounds_played
-        assert game.miscommunications[0] == 1
-        assert game.miscommunications[1] == 0
-        assert game.interceptions[0] == 1
-        assert game.interceptions[1] == 1
+        
+
+        assert game.data.rounds_played == rounds_played
+        assert game.data.miscommunications[0] == 1
+        assert game.data.miscommunications[1] == 0
+        assert game.data.interceptions[0] == 1
+        assert game.data.interceptions[1] == 1
 
 class TestNote:
     def test_default(self):
@@ -67,3 +89,20 @@ class TestNote:
     def test_kw_only(self):
         with pytest.raises(TypeError):
             note = Note(0)
+
+class TestGameData:
+    # simple game data is stored seorately so plies are tenable
+    def test_default(self):
+        game_data = GameData()
+
+        assert game_data.miscommunications[0] == 0
+        assert game_data.miscommunications[0] == 0
+
+        assert game_data.interceptions[1] == 0
+        assert game_data.interceptions[1] == 0
+
+        assert game_data.rounds_played == 0
+
+    def test_kw_only(self):
+        with pytest.raises(TypeError):
+            game_data = GameData(0)
