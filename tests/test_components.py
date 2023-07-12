@@ -1,0 +1,63 @@
+import pytest
+from decryptogame.components import GameData, Note
+
+@pytest.fixture
+def default_note():
+    return Note()
+
+class TestGameData:
+    # simple game data is stored seorately so plies are tenable
+    def test_default(self):
+        game_data = GameData()
+
+        assert game_data.miscommunications[0] == 0
+        assert game_data.miscommunications[0] == 0
+
+        assert game_data.interceptions[1] == 0
+        assert game_data.interceptions[1] == 0
+
+        assert game_data.rounds_played == 0
+
+    def test_kw_only(self):
+        with pytest.raises(TypeError):
+            game_data = GameData(0)
+
+    def test_copyable(self):
+        data = GameData(interceptions=[1,1], miscommunications=[1,1], rounds_played=2)
+        
+        # pure copy
+        data_copy = data.copy()
+
+        assert data == data_copy
+
+        data_copy.rounds_played += 1
+
+        assert data != data_copy
+
+        # copy with changes - for if someone wants functional style, is free with dataclasses anyway
+        changed_copy = data.copy(rounds_played=3)
+
+        assert changed_copy != data
+
+        assert changed_copy == data_copy
+
+
+class TestNote:
+    def test_default(self, default_note):
+        assert default_note.clues is None
+        assert default_note.attempted_decipher is None
+        assert default_note.attempted_interception is None
+        assert default_note.correct_code is None
+
+    def test_kw_only(self):
+        with pytest.raises(TypeError):
+            Note(0)
+
+    def test_configurable(self):
+        note = Note(clues=("a", "b", "c"), attempted_decipher=(2, 3, 1), attempted_interception=(1, 3, 2), correct_code=(4, 3, 1))
+        
+        assert note.clues == ("a", "b", "c")
+        assert note.attempted_decipher == (2, 3, 1)
+        assert note.attempted_interception == (1, 3, 2)
+        assert note.correct_code == (4, 3, 1)
+    
