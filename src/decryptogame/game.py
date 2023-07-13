@@ -49,12 +49,17 @@ class Game:
         if not self.game_over(game_data):
             return None
         
-        candidates = [end_condition.winner(game_data) for end_condition in self.end_conditions]
-        unique_candidates = {candidate for candidate in candidates if candidate is not None}
+        candidate_winners = [end_condition.winner(game_data) for end_condition in self.end_conditions]
+        unique_winners = {candidate for candidate in candidate_winners if candidate is not None}
+
+        losers = [end_condition.loser(game_data) for end_condition in self.end_conditions]
+        corresponding_winners = {not loser for loser in losers if loser is not None}
+        
+        unique_winners.update(corresponding_winners)
         
         # if the game the game ending conditions decide exactly one winner, they are the winner
-        if len(unique_candidates) == 1:
-            return unique_candidates.pop()
+        if len(unique_winners) == 1:
+            return unique_winners.pop()
         
         # otherwise, decide by tiebreaker (can return None to indicate tie anyway)
         return self.tiebreaker_func(self._data)
