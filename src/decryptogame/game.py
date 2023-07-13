@@ -62,6 +62,6 @@ class Game:
             return unique_winners.pop()
         
         # otherwise, decide by tiebreaker (can return None to indicate tie anyway)
-        return self.tiebreaker_func(self._data)
+        return self.tiebreaker_func(game_data)
 
         
