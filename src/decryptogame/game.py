@@ -1,7 +1,7 @@
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 from decryptogame.components import GameData, Note
 from decryptogame.end_criteria import EndCondition, official_end_condition_constructors, interception_miscommunication_diff_tiebreaker
-
+from typing import Optional
 
 class Game:        
     def __init__(self, *,
@@ -20,13 +20,15 @@ class Game:
             if self.game_over():
                 break
             self.process_round_notes(round_notes)
-            
+
+
     @property
-    def data(self):
+    def data(self) -> GameData:
         # data shouldn't be altered for simulating plies or viewing round results
         # so accessing yields a copy to minimize unintended side effects
         return self._data.copy()
     
+
     def process_round_notes(self, round_notes):
         for team, note in enumerate(round_notes):
             opponent = not team
@@ -36,12 +38,14 @@ class Game:
                 self._data.interceptions[opponent] += 1
         self._data.rounds_played += 1
 
-    def game_over(self, game_data=None):
+
+    def game_over(self, game_data=None) -> bool:
         # if called without an argument, use internal data
         game_data = game_data if game_data is not None else self._data
         return any(end_condition.game_over(game_data) for end_condition in self.end_conditions)
     
-    def winner(self, game_data=None):
+
+    def winner(self, game_data=None) -> Optional[int]:
         # if called without an argument, use internal data
         game_data = game_data if game_data is not None else self._data
         
@@ -65,3 +69,32 @@ class Game:
         return self.tiebreaker_func(game_data)
 
         
+def play_game(game: Game, teams, *, round_codes: Iterable[Sequence[tuple[str]]] = None, round_limit: Optional[int]=None):
+    round_codes = round_codes if round_codes is not None else RandomCodes()
+    for rounds_played, codes in enumerate(round_codes):
+        if game.game_over() or rounds_played == round_limit:
+            return
+        play_round(game, teams, codes)
+
+def play_round(game: Game, teams, codes: Sequence[tuple[str]]):
+
+    notes = [Note(), Note()]
+
+    # each team's encryptor decides the clues and they are written on their team's note
+    for team, code in enumerate(codes):
+        notes[team].clues = teams[team].encryptor.decide_clues(game, code)
+
+    # each team attempts to intercept the opposing team's code
+    for team, code in enumerate(codes):
+        notes[team].attempted_interception = teams[team].intercepter.intercept_clues(game, notes[not team].clues)
+
+    # each team attempts to decipher the clues to their code
+    for team, code in enumerate(codes):
+        notes[team].attempted_decipher = teams[team].guesser.decipher_clues(game, notes[team].clues)
+
+    # each team reveals their codes
+    for team, code in enumerate(codes):
+        notes[team].correct_code = codes[team]
+
+    # the notes are added to the notesheet
+    game.process_round_notes(notes)

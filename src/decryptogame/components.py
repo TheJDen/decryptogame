@@ -12,7 +12,7 @@ class GameData:
 
 @dataclasses.dataclass(kw_only=True)
 class Note:
-    clues: Sequence[str] = None
+    clues: Sequence[tuple[str]] = None
     attempted_decipher: Sequence[int] = None
     attempted_interception: Sequence[int] = None
     correct_code: Sequence[int] = None
