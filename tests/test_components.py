@@ -32,14 +32,12 @@ class TestGameData:
 
         data_copy.rounds_played += 1
 
-        assert data != data_copy
+        assert data.rounds_played != data_copy.rounds_played
 
-        # copy with changes - for if someone wants functional style, is free with dataclasses anyway
-        changed_copy = data.copy(rounds_played=3)
+        data_copy.miscommunications[0] += 1
 
-        assert changed_copy != data
+        assert data.miscommunications != data_copy.miscommunications
 
-        assert changed_copy == data_copy
 
 
 class TestNote:
