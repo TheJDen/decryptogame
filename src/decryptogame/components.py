@@ -3,6 +3,9 @@ from copy import deepcopy
 from collections.abc import Sequence
 from enum import IntEnum
 
+Code = tuple[int]
+Clue = tuple[str]
+
 class TeamName(IntEnum):
     WHITE = 0
     BLACK = 1
@@ -18,7 +21,7 @@ class GameData:
 
 @dataclasses.dataclass(kw_only=True)
 class Note:
-    clues: Sequence[tuple[str]] = None
-    attempted_decipher: Sequence[int] = None
-    attempted_interception: Sequence[int] = None
-    correct_code: Sequence[int] = None
+    clues: Clue = None
+    attempted_decipher: Code = None
+    attempted_interception: Code = None
+    correct_code: Code = None

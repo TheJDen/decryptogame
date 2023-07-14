@@ -1,8 +1,10 @@
 from collections.abc import Iterable, Sequence
+from decryptogame.components import Code, Note
 from decryptogame.game import Game
 from decryptogame.teams import Team
+from typing import Optional
     
-def play_game(game: Game, teams: Sequence[Team], *, round_codes: Iterable[Sequence[tuple[str]]] = None, round_limit: Optional[int]=None):
+def play_game(game: Game, teams: Sequence[Team], *, round_codes: Iterable[Sequence[Code]] = None, round_limit: Optional[int]=None):
     round_codes = round_codes if round_codes is not None else RandomCodes(game.keywords)
     for rounds_played, codes in enumerate(round_codes):
         if game.game_over() or rounds_played == round_limit:
@@ -10,7 +12,7 @@ def play_game(game: Game, teams: Sequence[Team], *, round_codes: Iterable[Sequen
         play_round(game, teams, codes)
 
 
-def play_round(game: Game, teams:Sequence[Team], codes: Sequence[tuple[str]]):
+def play_round(game: Game, teams:Sequence[Team], codes: Sequence[Code]):
 
     notes = [Note(), Note()]
 
