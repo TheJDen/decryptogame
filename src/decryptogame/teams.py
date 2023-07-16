@@ -61,9 +61,20 @@ class CommandLineIntercepter(Intercepter):
         print(f"Notesheet: {game.notesheet}")
         print(f"Scoresheet: {game.data}")
         print(f"Opponent Clues : {opponent_clues}")
+        opponent = not team_name
+        n = len(game.keywords[opponent])
+        print(f"Number of Opponent Keywords: {n}")
         code = []
         for clue in opponent_clues:
-            code_num = input(f"Code number for clue {clue}: ")
+            code_num = None
+            while code_num is None:
+                try:
+                    code_num = int(input(f"Code number for clue {clue}: "))
+                except ValueError:
+                    pass
+                if code_num is None or code_num not in range(n):
+                    print(f"Code num must lie in range [0 - {n}).")
+                    code_num = None
             code.append(code_num)
         return tuple(code)
 
@@ -75,11 +86,22 @@ class CommandLineGuesser(Guesser):
         print(f"Notesheet: {game.notesheet}")
         print(f"Scoresheet: {game.data}")
         print(f"Clues : {clues}")
+        n = len(game.keywords[team_name])
+        print(f"Number of Keywords: {n}")
         code = []
         for clue in clues:
-            code_num = input(f"Code number for clue {clue}: ")
+            code_num = None
+            while code_num is None:
+                try:
+                    code_num = int(input(f"Code number for clue {clue}: "))
+                except ValueError:
+                    pass
+                if code_num is None or code_num not in range(n + 1):
+                    print(f"Code num must lie in range [0 - {n}].")
+                    code_num = None
             code.append(code_num)
         return tuple(code)
+
 
 
 # random players choose clues and codes randomly
