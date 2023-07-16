@@ -3,16 +3,28 @@ from decryptogame.components import GameData, Note
 from decryptogame.end_criteria import EndCondition, official_end_condition_constructors, interception_miscommunication_diff_tiebreaker
 from typing import Optional
 
+def miscommunication_rule(note: Note, data: GameData) -> int:
+    return 1 if note.attempted_decipher != note.correct_code else 0
+
+def interception_rule(note: Note, data=GameData, count_first_round=False) -> int:
+    if data.rounds_played == 0 and not count_first_round:
+        return 0
+    return 1 if note.attempted_interception == note.correct_code else 0
+
 class Game:        
     def __init__(self, *,
                  keywords: Sequence[Sequence[str]],
                  notesheet: list[Sequence[Note]] = None,
                  end_conditions: list[EndCondition] = None,
+                 miscommunication_func = miscommunication_rule,
+                 interception_func = interception_rule,
                  tiebreaker_func = interception_miscommunication_diff_tiebreaker
                  ):
         self.keywords = keywords
         self.notesheet = notesheet if notesheet is not None else []
         self.end_conditions = end_conditions if end_conditions is not None else [end_condition() for end_condition in official_end_condition_constructors]
+        self.miscommunication_func = miscommunication_func
+        self.interception_func  = interception_func 
         self.tiebreaker_func = tiebreaker_func
         # initialize game data based on round notes
         self._data = GameData()
@@ -30,12 +42,10 @@ class Game:
     
 
     def process_round_notes(self, round_notes):
-        for team, note in enumerate(round_notes):
-            opponent = not team
-            if note.attempted_decipher != note.correct_code:
-                self._data.miscommunications[team] += 1
-            if self._data.rounds_played and note.attempted_interception == note.correct_code:
-                self._data.interceptions[opponent] += 1
+        for team_name, note in enumerate(round_notes):
+            opponent = not team_name
+            self._data.miscommunications[team_name] += self.miscommunication_func(note, self._data)
+            self._data.interceptions[opponent] += self.interception_func(note, self._data)
         self._data.rounds_played += 1
 
 

@@ -84,6 +84,6 @@ official_end_condition_constructors = [RoundEndCondition, MiscommunicationEndCon
 def interception_miscommunication_diff_tiebreaker(game_data: GameData) -> Optional[TeamName]:
     """Tiebreaker which decides the winner by the greatest difference between the team's number of interception tokens and miscommunication tokens. If this is also a tie, it yields a tie."""
     scores = [interceptions - miscommunications for interceptions, miscommunications in zip(game_data.interceptions, game_data.miscommunications)]
-    if scores[0] == scores[1]:
+    if scores[TeamName.WHITE] == scores[TeamName.BLACK]:
         return None
     return TeamName(scores.index(max(scores)))

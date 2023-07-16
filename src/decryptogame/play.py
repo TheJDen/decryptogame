@@ -17,20 +17,22 @@ def play_round(game: Game, teams:Sequence[Team], codes: Sequence[Code]):
     notes = [Note(), Note()]
 
     # each team's encryptor decides the clues and they are written on their team's note
-    for team, code in enumerate(codes):
-        notes[team].clues = teams[team].encryptor.decide_clues(game, code)
+    for team_name, code in enumerate(codes):
+        notes[team_name].clues = teams[team_name].encryptor.decide_clues(team_name, game, code)
 
     # each team attempts to intercept the opposing team's code
     for team, code in enumerate(codes):
-        notes[team].attempted_interception = teams[team].intercepter.intercept_clues(game, notes[not team].clues)
+        opponent = not team
+        notes[team].attempted_interception = teams[team].intercepter.intercept_clues(team_name, game, notes[opponent].clues)
 
     # each team attempts to decipher the clues to their code
     for team, code in enumerate(codes):
-        notes[team].attempted_decipher = teams[team].guesser.decipher_clues(game, notes[team].clues)
+        notes[team].attempted_decipher = teams[team].guesser.decipher_clues(team_name, game, notes[team].clues)
 
     # each team reveals their codes
     for team, code in enumerate(codes):
         notes[team].correct_code = codes[team]
 
-    # the notes are added to the notesheet
+    # the notes are processed and added to the notesheet
     game.process_round_notes(notes)
+    game.notesheet.append(notes)
