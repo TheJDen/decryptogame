@@ -2,25 +2,25 @@ import pytest
 from decryptogame.game import Game
 from decryptogame.components import GameData, Note
 
-EXAMPLE_KEYWORDS = (
+EXAMPLE_KEYWORD_CARDS = (
     ("black", "dragonfly", "cocktail", "sombrero"),
     ("antiquity", "bone", "morning", "nightmare")
 )
 
 @pytest.fixture
 def default_game():
-    return Game(keywords=EXAMPLE_KEYWORDS)
+    return Game(keyword_cards=EXAMPLE_KEYWORD_CARDS)
 
 class TestGame:
     def test_default_values(self, default_game):
-        assert default_game.keywords == EXAMPLE_KEYWORDS
+        assert default_game.keyword_cards == EXAMPLE_KEYWORD_CARDS
         assert not default_game.notesheet
         assert default_game.data == GameData()
         assert not default_game.game_over()
 
     def test_kw_only(self):
         with pytest.raises(TypeError):
-            Game(EXAMPLE_KEYWORDS)
+            Game(EXAMPLE_KEYWORD_CARDS)
 
     def test_private_data(self, default_game):
         game_data = default_game.data
@@ -78,6 +78,6 @@ class TestGame:
 
         rounds_played = len(notesheet)
 
-        game = Game(keywords=EXAMPLE_KEYWORDS, notesheet=notesheet)
+        game = Game(keyword_cards=EXAMPLE_KEYWORD_CARDS, notesheet=notesheet)
 
         assert game.data == GameData(miscommunications=[1,0], interceptions=[1,1], rounds_played = rounds_played)

@@ -3,6 +3,7 @@ from copy import deepcopy
 from collections.abc import Sequence
 from enum import IntEnum
 
+Keywords = Sequence[str]
 Code = tuple[int]
 Clue = tuple[str]
 
