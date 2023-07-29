@@ -1,7 +1,7 @@
 from typing import Protocol
 import dataclasses
 import random
-from decryptogame.components import Code, Clue, TeamName
+from decryptogame.components import Keywords, Code, Clue, TeamName
 from decryptogame.game import Game
 
 class Encryptor(Protocol):
@@ -24,6 +24,7 @@ class Guesser(Protocol):
     
 @dataclasses.dataclass(kw_only=True)
 class Team:
+    keyword_card: Keywords
     encryptor: Encryptor
     intercepter: Intercepter
     guesser: Guesser
