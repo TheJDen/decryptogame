@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from decryptogame.components import Keywords, GameData, Note, TeamName
+from decryptogame.components import GameData, Note, TeamName
 from decryptogame.end_criteria import EndCondition, OfficialEndConditions
 from typing import Optional
 
@@ -20,14 +20,12 @@ def interception_miscommunication_diff_tiebreaker(game_data: GameData) -> Option
 
 class Game:        
     def __init__(self, *,
-                 keyword_cards: Sequence[Keywords],
                  notesheet: list[Sequence[Note]] = None,
                  end_conditions: list[EndCondition] = None,
                  miscommunication_func = miscommunication_rule,
                  interception_func = interception_rule,
                  tiebreaker_func = interception_miscommunication_diff_tiebreaker
                  ):
-        self.keyword_cards = keyword_cards
         self.notesheet = notesheet if notesheet is not None else []
         self.end_conditions = end_conditions if end_conditions is not None else OfficialEndConditions()
         self.miscommunication_func = miscommunication_func
