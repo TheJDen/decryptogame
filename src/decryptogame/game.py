@@ -1,6 +1,6 @@
 from collections.abc import Sequence
-from decryptogame.components import Keywords, GameData, Note
-from decryptogame.end_criteria import EndCondition, official_end_condition_constructors, interception_miscommunication_diff_tiebreaker
+from decryptogame.components import Keywords, GameData, Note, TeamName
+from decryptogame.end_criteria import EndCondition, OfficialEndConditions
 from typing import Optional
 
 def miscommunication_rule(note: Note, data: GameData) -> int:
@@ -10,6 +10,13 @@ def interception_rule(note: Note, data=GameData, count_first_round=False) -> int
     if data.rounds_played == 0 and not count_first_round:
         return 0
     return 1 if note.attempted_interception == note.correct_code else 0
+
+def interception_miscommunication_diff_tiebreaker(game_data: GameData) -> Optional[TeamName]:
+    """Tiebreaker which decides the winner by the greatest difference between the team's number of interception tokens and miscommunication tokens. If this is also a tie, it yields a tie."""
+    scores = [interceptions - miscommunications for interceptions, miscommunications in zip(game_data.interceptions, game_data.miscommunications)]
+    if scores[TeamName.WHITE] == scores[TeamName.BLACK]:
+        return None
+    return TeamName(scores.index(max(scores)))
 
 class Game:        
     def __init__(self, *,
@@ -22,7 +29,7 @@ class Game:
                  ):
         self.keyword_cards = keyword_cards
         self.notesheet = notesheet if notesheet is not None else []
-        self.end_conditions = end_conditions if end_conditions is not None else [end_condition() for end_condition in official_end_condition_constructors]
+        self.end_conditions = end_conditions if end_conditions is not None else OfficialEndConditions()
         self.miscommunication_func = miscommunication_func
         self.interception_func  = interception_func 
         self.tiebreaker_func = tiebreaker_func

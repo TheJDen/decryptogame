@@ -11,6 +11,9 @@ class TeamName(IntEnum):
     WHITE = 0
     BLACK = 1
 
+    def __format__(self, spec):
+        return f"<{self.name}: {self.value}>"
+
 @dataclasses.dataclass(kw_only=True)
 class GameData:
     rounds_played: int = 0

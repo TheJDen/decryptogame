@@ -8,21 +8,21 @@ class Encryptor(abc.ABC):
     """Interface representing an Encryptor, a teammate who decides clues"""
 
     @abc.abstractmethod
-    def decide_clues(team_name: TeamName, game: Game, code: Code) -> Clue:
+    def decide_clues(self, team_name: TeamName, game: Game, code: Code) -> Clue:
         pass
 
 class Intercepter(abc.ABC):
     """Interface representing an Intercepter, a teammate who attempts to decipher the opposing team's clues"""
 
     @abc.abstractmethod
-    def intercept_clues(team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
+    def intercept_clues(self, team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
         pass
 
 class Guesser(abc.ABC):
     """Interface representing an Guesser, a teammate who attempts to decipher their team's clues"""
 
     @abc.abstractmethod
-    def decipher_clues(team_name: TeamName, game: Game, clues: Clue) -> Code:
+    def decipher_clues(self, team_name: TeamName, game: Game, clues: Clue) -> Code:
         pass
     
 @dataclasses.dataclass(kw_only=True)
@@ -41,11 +41,11 @@ class Team:
 class CommandLineEncryptor(Encryptor):
     """Interface representing an Encryptor, a teammate who decides clues"""
 
-    def decide_clues(team_name: TeamName, game: Game, code: Code) -> Clue:
+    def decide_clues(self, team_name: TeamName, game: Game, code: Code) -> Clue:
         print(f"You are Encryptor on team {TeamName(team_name)}")
         print(f"Notesheet: {game.notesheet}")
         print(f"Scoresheet: {game.data}")
-        print(f"Keywords: {game.keywords[team_name]}")
+        print(f"Keywords: {game.keyword_cards[team_name]}")
         print(f"Code : {code}")
         clues = []
         for code_num in code:
@@ -56,13 +56,13 @@ class CommandLineEncryptor(Encryptor):
 class CommandLineIntercepter(Intercepter):
     """Interface representing an Intercepter, a teammate who attempts to decipher the opposing team's clues"""
 
-    def intercept_clues(team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
+    def intercept_clues(self, team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
         print(f"You are Intercepter on team {TeamName(team_name)}")
         print(f"Notesheet: {game.notesheet}")
         print(f"Scoresheet: {game.data}")
         print(f"Opponent Clues : {opponent_clues}")
         opponent = not team_name
-        n = len(game.keywords[opponent])
+        n = len(game.keyword_cards[opponent])
         print(f"Number of Opponent Keywords: {n}")
         code = []
         for clue in opponent_clues:
@@ -81,12 +81,12 @@ class CommandLineIntercepter(Intercepter):
 class CommandLineGuesser(Guesser):
     """Interface representing an Guesser, a teammate who attempts to decipher their team's clues"""
 
-    def decipher_clues(team_name: TeamName, game: Game, clues: Clue) -> Code:
+    def decipher_clues(self, team_name: TeamName, game: Game, clues: Clue) -> Code:
         print(f"You are Guesser on team {TeamName(team_name)}")
         print(f"Notesheet: {game.notesheet}")
         print(f"Scoresheet: {game.data}")
         print(f"Clues : {clues}")
-        n = len(game.keywords[team_name])
+        n = len(game.keyword_cards[team_name])
         print(f"Number of Keywords: {n}")
         code = []
         for clue in clues:
@@ -102,24 +102,28 @@ class CommandLineGuesser(Guesser):
             code.append(code_num)
         return tuple(code)
 
-
+CommandLineTeam = lambda: Team(
+                                encryptor=CommandLineEncryptor(),
+                                intercepter=CommandLineIntercepter(),
+                                guesser=CommandLineGuesser()
+                            )
 
 # random players choose clues and codes randomly
 
 class RandomEncryptor(Encryptor):
     """Interface representing an Encryptor, a teammate who decides clues"""
 
-    def decide_clues(team_name: TeamName, game: Game, code: Code) -> Clue:
+    def decide_clues(self, team_name: TeamName, game: Game, code: Code) -> Clue:
         pass
 
 class RandomIntercepter(Intercepter):
     """Interface representing an Intercepter, a teammate who attempts to decipher the opposing team's clues"""
 
-    def intercept_clues(team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
+    def intercept_clues(self, team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
         pass
 
 class RandomGuesser(Guesser):
     """Interface representing an Guesser, a teammate who attempts to decipher their team's clues"""
 
-    def decipher_clues(team_name: TeamName, game: Game, clues: Clue) -> Code:
+    def decipher_clues(self, team_name: TeamName, game: Game, clues: Clue) -> Code:
         pass
