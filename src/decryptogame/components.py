@@ -25,7 +25,7 @@ class GameData:
 
 @dataclasses.dataclass(kw_only=True)
 class Note:
-    clues: Clue = None
-    attempted_decipher: Code = None
-    attempted_interception: Code = None
-    correct_code: Code = None
+    clues: Clue
+    attempted_interception: Code
+    attempted_decipher: Code
+    correct_code: Code

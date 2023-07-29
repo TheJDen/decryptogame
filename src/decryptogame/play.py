@@ -15,25 +15,28 @@ def play_game(game: Game, teams: Sequence[Team], *, round_codes: Iterable[Sequen
 
 def play_round(game: Game, teams:Sequence[Team], codes: Sequence[Code]):
 
-    notes = [Note(), Note()]
-
-    # each team's encryptor decides the clues and they are written on their team's note
+    # each team's encryptor decides the clues
+    clues = {}
     for team_name, code in enumerate(codes):
-        notes[team_name].clues = teams[team_name].encryptor.decide_clues(team_name, game, code)
+        clues[team_name] = teams[team_name].encryptor.decide_clues(team_name, game, code)
 
     # each team attempts to intercept the opposing team's code
-    for team, code in enumerate(codes):
-        opponent = not team
-        notes[team].attempted_interception = teams[team].intercepter.intercept_clues(team_name, game, notes[opponent].clues)
+    attempted_interception = {}
+    for team_name, code in enumerate(codes):
+        opponent = not team_name
+        attempted_interception[team_name] = teams[team_name].intercepter.intercept_clues(team_name, game, clues[opponent])
 
     # each team attempts to decipher the clues to their code
-    for team, code in enumerate(codes):
-        notes[team].attempted_decipher = teams[team].guesser.decipher_clues(team_name, game, notes[team].clues)
+    attempted_decipher = {}
+    for team_name, code in enumerate(codes):
+        attempted_decipher[team_name] = teams[team_name].guesser.decipher_clues(team_name, game, clues[team_name])
 
-    # each team reveals their codes
-    for team, code in enumerate(codes):
-        notes[team].correct_code = codes[team]
-
-    # the notes are processed and added to the notesheet
+    # each team reveals their codes and the notes are processed and added to the notesheet
+    notes = [Note(clues=clues[team_name],
+                  attempted_interception=attempted_interception[team_name],
+                  attempted_decipher=attempted_decipher[team_name],
+                  correct_code=code
+                  ) 
+                  for team_name, code in enumerate(codes)]
     game.process_round_notes(notes)
     game.notesheet.append(notes)

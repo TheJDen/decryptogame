@@ -1,9 +1,6 @@
 import pytest
 from decryptogame.components import GameData, Note
 
-@pytest.fixture
-def default_note():
-    return Note()
 
 class TestGameData:
     # simple game data is stored seorately so plies are tenable
@@ -41,11 +38,6 @@ class TestGameData:
 
 
 class TestNote:
-    def test_default(self, default_note):
-        assert default_note.clues is None
-        assert default_note.attempted_decipher is None
-        assert default_note.attempted_interception is None
-        assert default_note.correct_code is None
 
     def test_kw_only(self):
         with pytest.raises(TypeError):
