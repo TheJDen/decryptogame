@@ -160,7 +160,8 @@ class CommandLineGuesser(Guesser):
             code.append(code_num)
         return tuple(code)
 
-CommandLineTeam = lambda: Team(
+CommandLineTeam = lambda keywords: Team(
+                                keyword_card=keywords,
                                 encryptor=CommandLineEncryptor(),
                                 intercepter=CommandLineIntercepter(),
                                 guesser=CommandLineGuesser()
