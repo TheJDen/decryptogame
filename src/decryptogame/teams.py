@@ -36,7 +36,7 @@ class Team:
 # command line players allow a developer to enter clues or code through the command line
 
 class CommandLineEncryptor(Encryptor):
-    """Interface representing an Encryptor, a teammate who decides clues"""
+    """A teammate who decides clues using the command line. """
 
     def decide_clues(self, team_name: TeamName, game: Game, code: Code) -> Clue:
         print(f"You are Encryptor on team {TeamName(team_name)}")
@@ -51,7 +51,7 @@ class CommandLineEncryptor(Encryptor):
         return tuple(clues)
 
 class CommandLineIntercepter(Intercepter):
-    """Interface representing an Intercepter, a teammate who attempts to decipher the opposing team's clues"""
+    """A teammate who attempts to decipher the opposing team's clues using the command line. """
 
     def intercept_clues(self, team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
         print(f"You are Intercepter on team {TeamName(team_name)}")
@@ -76,7 +76,7 @@ class CommandLineIntercepter(Intercepter):
         return tuple(code)
 
 class CommandLineGuesser(Guesser):
-    """Interface representing an Guesser, a teammate who attempts to decipher their team's clues"""
+    """A teammate who attempts to decipher their team's clues using the command line. """
 
     def decipher_clues(self, team_name: TeamName, game: Game, clues: Clue) -> Code:
         print(f"You are Guesser on team {TeamName(team_name)}")
@@ -105,22 +105,3 @@ CommandLineTeam = lambda: Team(
                                 guesser=CommandLineGuesser()
                             )
 
-# random players choose clues and codes randomly
-
-class RandomEncryptor(Encryptor):
-    """Interface representing an Encryptor, a teammate who decides clues"""
-
-    def decide_clues(self, team_name: TeamName, game: Game, code: Code) -> Clue:
-        pass
-
-class RandomIntercepter(Intercepter):
-    """Interface representing an Intercepter, a teammate who attempts to decipher the opposing team's clues"""
-
-    def intercept_clues(self, team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
-        pass
-
-class RandomGuesser(Guesser):
-    """Interface representing an Guesser, a teammate who attempts to decipher their team's clues"""
-
-    def decipher_clues(self, team_name: TeamName, game: Game, clues: Clue) -> Code:
-        pass
