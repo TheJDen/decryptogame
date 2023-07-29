@@ -1,6 +1,5 @@
 from typing import Protocol
 import dataclasses
-import random
 from decryptogame.components import Keywords, Code, Clue, TeamName
 from decryptogame.game import Game
 
@@ -8,22 +7,53 @@ class Encryptor(Protocol):
     """Interface representing an Encryptor, a teammate who decides clues"""
 
     def decide_clues(self, team_name: TeamName, game: Game, code: Code) -> Clue:
+        """Decide clues for the given code as an Encryptor.
+
+        Args:
+            team_name (TeamName): The team name of the Encryptor.
+            game (Game): The Game instance representing the ongoing game.
+            code (Code): The code assigned to the Encryptor's team.
+
+        Returns:
+            Clue: The clues decided by the Encryptor for each code number in the provided code.
+        """
         ...
 
 class Intercepter(Protocol):
     """Interface representing an Intercepter, a teammate who attempts to decipher the opposing team's clues"""
 
     def intercept_clues(self, team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
+        """Attempt to decipher the opposing team's clues as an Intercepter.
+
+        Args:
+            team_name (TeamName): The team name of the Intercepter.
+            game (Game): The Game instance representing the ongoing game.
+            opponent_clues (Clue): The clues provided by the opposing team.
+
+        Returns:
+            Code: The intercepted code numbers based on the opposing team's clues.
+        """
         ...
 
 class Guesser(Protocol):
     """Interface representing an Guesser, a teammate who attempts to decipher their team's clues"""
 
     def decipher_clues(self, team_name: TeamName, game: Game, clues: Clue) -> Code:
+        """Attempt to decipher the clues provided by the team as a Guesser.
+
+        Args:
+            team_name (TeamName): The team name of the Guesser.
+            game (Game): The Game instance representing the ongoing game.
+            clues (Clue): The clues provided by the Guesser's team.
+
+        Returns:
+            Code: The guessed code numbers based on the team's clues.
+        """
         ...
     
 @dataclasses.dataclass(kw_only=True)
 class Team:
+    """Dataclass representing a team for a Decrypto game."""
     keyword_card: Keywords
     encryptor: Encryptor
     intercepter: Intercepter
@@ -40,6 +70,16 @@ class CommandLineEncryptor(Encryptor):
     """A teammate who decides clues using the command line. """
 
     def decide_clues(self, team_name: TeamName, game: Game, code: Code) -> Clue:
+        """Decide clues for the given code using the command line.
+
+        Args:
+            team_name (TeamName): The team name of the Encryptor.
+            game (Game): The Game instance representing the ongoing game.
+            code (Code): The code assigned to the Encryptor's team.
+
+        Returns:
+            Clue: The clues decided by the Encryptor for each code number in the provided code.
+        """
         print(f"You are Encryptor on team {TeamName(team_name)}")
         print(f"Notesheet: {game.notesheet}")
         print(f"Scoresheet: {game.data}")
@@ -55,6 +95,16 @@ class CommandLineIntercepter(Intercepter):
     """A teammate who attempts to decipher the opposing team's clues using the command line. """
 
     def intercept_clues(self, team_name: TeamName, game: Game, opponent_clues: Clue) -> Code:
+        """Attempt to intercept the opposing team's clues using the command line.
+
+        Args:
+            team_name (TeamName): The team name of the Intercepter.
+            game (Game): The Game instance representing the ongoing game.
+            opponent_clues (Clue): The clues provided by the opposing team.
+
+        Returns:
+            Code: The intercepted code numbers based on the opposing team's clues.
+        """
         print(f"You are Intercepter on team {TeamName(team_name)}")
         print(f"Notesheet: {game.notesheet}")
         print(f"Scoresheet: {game.data}")
@@ -80,6 +130,16 @@ class CommandLineGuesser(Guesser):
     """A teammate who attempts to decipher their team's clues using the command line. """
 
     def decipher_clues(self, team_name: TeamName, game: Game, clues: Clue) -> Code:
+        """Attempt to decipher the team's clues using the command line.
+
+        Args:
+            team_name (TeamName): The team name of the Guesser.
+            game (Game): The Game instance representing the ongoing game.
+            clues (Clue): The clues provided by the Guesser's team.
+
+        Returns:
+            Code: The guessed code numbers based on the team's clues.
+        """
         print(f"You are Guesser on team {TeamName(team_name)}")
         print(f"Notesheet: {game.notesheet}")
         print(f"Scoresheet: {game.data}")

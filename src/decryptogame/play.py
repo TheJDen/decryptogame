@@ -5,7 +5,16 @@ from decryptogame.generators import RandomCodes
 from decryptogame.teams import Team
 from typing import Optional
     
-def play_game(game: Game, teams: Sequence[Team], *, round_codes: Iterable[Sequence[Code]] = None, round_limit: Optional[int]=None):
+def play_game(teams: Sequence[Team], *, game: Game = None, round_codes: Iterable[Sequence[Code]] = None, round_limit: Optional[int]=None):
+    """Play a game of Decrypto.
+
+    Args:
+        teams (Sequence[Team]): The pair of teams participating in the game.
+        game (Game): The Decrypto game object. If None, a standard game will be generated.
+        round_codes (Iterable[Sequence[Code]], optional): Iterable of codes for each round. If None, random codes will be generated.
+        round_limit (Optional[int], optional): The maximum number of rounds to play. If None, the game continues until completion.
+    """
+    game = game if game is not None else Game()
     round_codes = round_codes if round_codes is not None else RandomCodes(game.keyword_cards)
     for rounds_played, codes in enumerate(round_codes):
         if game.game_over() or rounds_played == round_limit:
@@ -14,7 +23,13 @@ def play_game(game: Game, teams: Sequence[Team], *, round_codes: Iterable[Sequen
 
 
 def play_round(game: Game, teams:Sequence[Team], codes: Sequence[Code]):
+    """Play a single round of Decrypto.
 
+    Args:
+        game (Game): The Decrypto game object.
+        teams (Sequence[Team]): The pair of teams participating in the game.
+        codes (Sequence[Code]): The codes for the current round.
+    """
     # each team's encryptor decides the clues
     clues = {}
     for team_name, code in enumerate(codes):
