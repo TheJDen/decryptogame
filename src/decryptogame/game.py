@@ -61,14 +61,16 @@ class Game:
             interception_func (function, optional): The function to calculate interceptions. Defaults to interception_rule.
             tiebreaker_func (function, optional): The tiebreaker function to decide the winner. Defaults to interception_miscommunication_diff_tiebreaker.
         """
-        self.notesheet = notesheet if notesheet is not None else []
+        self.notesheet = []
         self.end_conditions = end_conditions if end_conditions is not None else OfficialEndConditions()
         self.miscommunication_func = miscommunication_func
         self.interception_func  = interception_func 
         self.tiebreaker_func = tiebreaker_func
-        # initialize game data based on round notes
         self._data = GameData()
-        for round_notes in self.notesheet:
+        # initialize game data based on round notes in notesheet
+        if notesheet is None:
+            return
+        for round_notes in notesheet:
             if self.game_over():
                 break
             self.process_round_notes(round_notes)
@@ -97,6 +99,7 @@ class Game:
             self._data.miscommunications[team_name] += self.miscommunication_func(note, self._data)
             self._data.interceptions[opponent] += self.interception_func(note, self._data)
         self._data.rounds_played += 1
+        self.notesheet.append(round_notes)
 
 
     def game_over(self, game_data: GameData = None) -> bool:
@@ -113,7 +116,7 @@ class Game:
         return any(end_condition.game_over(game_data) for end_condition in self.end_conditions)
     
 
-    def winner(self, game_data: GameData = None) -> Optional[int]:
+    def winner(self, game_data: GameData = None) -> Optional[TeamName]:
         """Determine the winner of the game based on the provided game data.
 
         Args:
@@ -139,7 +142,7 @@ class Game:
         
         # if the game the game ending conditions decide exactly one winner, they are the winner
         if len(unique_winners) == 1:
-            return unique_winners.pop()
+            return TeamName(unique_winners.pop())
         
         # otherwise, decide by tiebreaker (can return None to indicate tie anyway)
         return self.tiebreaker_func(game_data)
