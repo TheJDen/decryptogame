@@ -1,6 +1,14 @@
 # decryptogame
 A non-official implementation of a Decrypto-style game
 
+# Docs
+https://decryptogame.readthedocs.io/en/latest/
+
+# Game Reference
+Decrypto official site: https://www.scorpionmasque.com/en/decrypto  
+Decrypto official rules: https://www.fgbradleys.com/rules/rules6/Decrypto%20-%20rules.pdf
+
+
 # Official Authorization
 This implementation may be used so long as its usage satisfies the following criteria:
 
@@ -11,7 +19,3 @@ This implementation may be used so long as its usage satisfies the following cri
 - it states clearly being a "non official" version of the game
 
 - it does not allow to play the full game normally (Humans playing against each others or against AI) so that it does not compete against Scorpion Masque’s versions of the game
-
-# Game Reference
-Decrypto official site: https://www.scorpionmasque.com/en/decrypto  
-Decrypto official rules: https://www.fgbradleys.com/rules/rules6/Decrypto%20-%20rules.pdf
