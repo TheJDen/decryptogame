@@ -1,0 +1,22 @@
+site_name: decryptogame
+
+theme: readthedocs
+
+plugins:
+  - mkdocstrings:
+      # default_handlers: python
+      # handlers:
+      #   python:
+      #     paths: [src]
+
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Tutorials: tutorials.md
+  - Generators: generators.md
+  - Teams: teams.md
+  - Play: play.md
+  - Game: game.md
+  - Components: components.md
+  - End Criteria: end-criteria.md
