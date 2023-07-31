@@ -4,19 +4,22 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "decryptogame"
-version = "0.0.3"
+version = "1.0.1"
 authors = [
   { name="Jaden Rodriguez", email="jadenrodriguez7@gmail.com" },
 ]
-description = "A non-official implementation of a Decrypto-style game"
+description = "A non-official implementation of a Decrypto-style game for simulation and AI work."
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Operating System :: OS Independent",
-    "Development Status :: 1 - Planning"
+    "Development Status :: 4 - Beta"
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/YaBoiSkinnyP/decryptogame/"
 
 [tool.pytest.ini_options]
 pythonpath = [

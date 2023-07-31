@@ -1,10 +1,6 @@
 # decryptogame
 A non-official implementation of a Decrypto-style game
 
-# Source code
-
-https://github.com/YaBoiSkinnyP/decryptogame/
-
 # Official Authorization
 This implementation may be used so long as its usage satisfies the following criteria:
 
