@@ -6,7 +6,11 @@ from decryptogame.teams import Team, TeamContext
 from functools import partial
 from typing import Optional
     
-def play_game(teams: Sequence[Team], *, game: Game = None, round_codes: Iterable[Sequence[Code]] = None, round_limit: Optional[int]=None):
+def play_game(teams: Sequence[Team], *, 
+              game: Game = None, 
+              round_codes: Iterable[Sequence[Code]] = None, 
+              round_limit: Optional[int]=None
+              ) -> Game:
     """Play a game of Decrypto. This function will change the game object as the rounds are played.
 
     Args:

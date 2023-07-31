@@ -17,8 +17,8 @@ class TeamName(IntEnum):
     WHITE = 0
     BLACK = 1
 
-    def __format__(self, spec):
-        """Custom format method for TeamName enumeration values.
+    def __repr__(self):
+        """Custom representation for TeamName enumeration values.
 
         Args:
             spec (str): Format specification.
@@ -27,6 +27,17 @@ class TeamName(IntEnum):
             str: A formatted string representation of the TeamName.
         """
         return f"<{self.name}: {self.value}>"
+    
+    def __format__(self, spec):
+        """Custom formmatting method for TeamName enumeration values.
+
+        Args:
+            spec (str): Format specification.
+
+        Returns:
+            str: A formatted string representation of the TeamName.
+        """
+        return str(self.name)
 
 @dataclasses.dataclass(kw_only=True)
 class GameData:
