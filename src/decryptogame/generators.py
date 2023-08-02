@@ -35,7 +35,7 @@ class RandomCodes:
         """
         return [self.random.choice(codes) for codes in self.team_codes]
 
-    def __iter__(self) -> RandomCodes:
+    def __iter__(self):
         """Return the generator as an iterable object.
 
         Returns:
@@ -77,7 +77,7 @@ class RandomKeywordCards:
             self.words.extend(keywords)
         return cards
 
-    def __iter__(self) -> RandomKeywordCards:
+    def __iter__(self):
         """Return the generator as an iterable object.
 
         Returns:

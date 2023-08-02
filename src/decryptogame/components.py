@@ -20,9 +20,6 @@ class TeamName(IntEnum):
     def __repr__(self):
         """Custom representation for TeamName enumeration values.
 
-        Args:
-            spec (str): Format specification.
-
         Returns:
             str: A formatted string representation of the TeamName.
         """
@@ -49,7 +46,7 @@ class GameData:
     miscommunications: Sequence[int] = dataclasses.field(default_factory=lambda: [0, 0])
     interceptions: Sequence[int] = dataclasses.field(default_factory=lambda: [0, 0])
 
-    def copy(self) -> GameData:
+    def copy(self):
         """Create a deep copy of the GameData object.
 
         Returns:
