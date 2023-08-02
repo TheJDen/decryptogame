@@ -28,14 +28,11 @@ class TeamName(IntEnum):
         """
         return f"<{self.name}: {self.value}>"
     
-    def __format__(self, spec):
-        """Custom formmatting method for TeamName enumeration values.
-
-        Args:
-            spec (str): Format specification.
+    def __str__(self):
+        """Custom string method for TeamName enumeration values.
 
         Returns:
-            str: A formatted string representation of the TeamName.
+            str: The name of the team.
         """
         return str(self.name)
 
@@ -52,7 +49,7 @@ class GameData:
     miscommunications: Sequence[int] = dataclasses.field(default_factory=lambda: [0, 0])
     interceptions: Sequence[int] = dataclasses.field(default_factory=lambda: [0, 0])
 
-    def copy(self):
+    def copy(self) -> GameData:
         """Create a deep copy of the GameData object.
 
         Returns:

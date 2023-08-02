@@ -4,12 +4,7 @@ theme: readthedocs
 
 plugins:
   - mkdocstrings:
-      # default_handlers: python
-      # handlers:
-      #   python:
-      #     paths: [src]
-
-
+  
 nav:
   - Home: index.md
   - Installation: installation.md
