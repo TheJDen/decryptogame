@@ -3,6 +3,7 @@ from collections.abc import Sequence
 from decryptogame.components import Keywords, Code
 import decryptogame.official_words.english as english
 from itertools import permutations
+from typing import Optional
 
 
 DEFAULT_CODE_LENGTH = 3
@@ -14,12 +15,12 @@ class RandomCodes:
     Args:
         keyword_cards (Sequence[Keywords]): The keyword cards for each team.
         code_lengths (Sequence[int], optional): The lengths of the codes for each team. Defaults to DEFAULT_CODE_LENGTH.
-        seed (random.Random, optional): The random seed for consistent code generation. Defaults to None.
+        seed (int, optional): The random seed for consistent code generation. Defaults to None.
 
     Yields:
         tuple[Code, Code]: A tuple containing the randomly generated codes for each team.
     """
-    def __init__(self, keyword_cards: Sequence[Keywords], code_lengths: Sequence[int] = None, seed: random.Random = None):
+    def __init__(self, keyword_cards: Sequence[Keywords], code_lengths: Sequence[int] = None, seed: Optional[int] = None):
         self.code_lengths = code_lengths if code_lengths is not None else [DEFAULT_CODE_LENGTH] * len(keyword_cards)
         self.random = random.Random(seed) if seed is not None else random.Random()
         self.team_codes = []
@@ -49,12 +50,12 @@ class RandomKeywordCards:
     Args:
         card_lengths (Sequence[int], optional): The number of keywords on each team's keyword card. Defaults to DEFAULT_CARD_LENGTH.
         words (list[str], optional): The list of words to use for generating keyword cards. Defaults to the official English word list.
-        seed (random.Random, optional): The random seed for consistent card generation. Defaults to None.
+        seed (int, optional): The random seed for consistent card generation. Defaults to None.
 
     Yields:
         tuple[Keywords, Keywords]: A tuple containing the randomly generated keyword cards for each team.
     """
-    def __init__(self, card_lengths: Sequence[int] = None, words: list[str] = english.words, seed: random.Random = None):
+    def __init__(self, card_lengths: Sequence[int] = None, words: list[str] = english.words, seed: Optional[int] = None):
         self.card_lengths = card_lengths if card_lengths is not None else [DEFAULT_CARD_LENGTH] * 2
         self.words = words
         self.random = random.Random(seed) if seed is not None else random.Random()
@@ -65,16 +66,15 @@ class RandomKeywordCards:
         Returns:
             tuple[Keywords, Keywords]: A tuple containing the randomly generated keyword cards for each team.
         """
+        word_indices = list(range(len(self.words)))
         cards = []
         for card_length in self.card_lengths:
-            keywords = []
-            while len(keywords) < card_length:
-                keyword = self.random.choice(self.words)
-                self.words.remove(keyword)
-                keywords.append(keyword)
-            cards.append(tuple(keywords))
-        for keywords in cards:
-            self.words.extend(keywords)
+            keyword_indices = []
+            while len(keyword_indices) < card_length:
+                keyword_index = self.random.choice(word_indices)
+                word_indices.remove(keyword_index)
+                keyword_indices.append(keyword_index)
+            cards.append(tuple(self.words[i] for i in keyword_indices))
         return cards
 
     def __iter__(self):
