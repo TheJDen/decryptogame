@@ -5,8 +5,7 @@ A non-official implementation of a Decrypto-style game
 https://decryptogame.readthedocs.io/en/latest/
 
 # Game Reference
-Decrypto official site: https://www.scorpionmasque.com/en/decrypto  
-Decrypto official rules: https://www.fgbradleys.com/rules/rules6/Decrypto%20-%20rules.pdf
+Decrypto info site: https://www.decrypto.info/
 
 
 # Official Authorization
