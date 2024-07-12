@@ -186,4 +186,4 @@ class RoundEndCondition(EndCondition):
         """
         return None
     
-OfficialEndConditions = lambda: [RoundEndCondition(), MiscommunicationEndCondition(), InterceptionEndCondition()]
+OFFICIAL_END_CONDITIONS = (RoundEndCondition(), MiscommunicationEndCondition(), InterceptionEndCondition())

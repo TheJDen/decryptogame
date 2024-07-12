@@ -4,8 +4,8 @@ from collections.abc import Sequence
 from enum import IntEnum
 
 Keywords = Sequence[str]
-Code = tuple[int]
-Clue = tuple[str]
+Code = tuple[int, ...]
+Clue = tuple[str, ...]
 
 class TeamName(IntEnum):
     """Enumeration representing the team names.

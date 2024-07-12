@@ -1,5 +1,5 @@
 from collections.abc import Iterable, Sequence
-from decryptogame.components import Code, Note
+from decryptogame.components import Code, Note, TeamName
 from decryptogame.game import Game
 from decryptogame.generators import RandomCodes
 from decryptogame.teams import Team, TeamContext
@@ -41,7 +41,7 @@ def play_round(teams:Sequence[Team], game: Game, codes: Sequence[Code]):
     """
     # each member may need information about its team and the game to make proper decisions
     context = [TeamContext(
-                team_name=team_name, 
+                team_name=TeamName(team_name), 
                 keywords=team.keywords, 
                 num_opponent_keywords=len(teams[not team_name].keywords),
                 game=game
